@@ -1,7 +1,7 @@
 body {
     width: 100vw;
 }
-navBar {
+.navBar {
     display: flex;
     justify-content: space-around;
     flex-direction: row;
