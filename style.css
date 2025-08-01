@@ -1,3 +1,6 @@
+body {
+    width: 100vw;
+}
 navBar {
     display: flex;
     justify-content: space-around;
