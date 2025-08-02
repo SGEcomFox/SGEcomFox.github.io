@@ -11,5 +11,10 @@ function buildTestItems(amount) {
             id : 'item'+i
         });
         $('main').append(newItem);
+        const newIcon = $('<img>', {
+            class: 'itemIcon',
+            src: '/icons/sword.png'
+        });
+        newItem.append(newIcon)
     }
 }
