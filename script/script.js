@@ -1,7 +1,5 @@
 $(document).ready(function() {
     buildTestItems(10)
-    console.log("start");
-    
 })
 
 function buildTestItems(amount) {
@@ -38,3 +36,4 @@ function buildTestItems(amount) {
         
     }
 }
+

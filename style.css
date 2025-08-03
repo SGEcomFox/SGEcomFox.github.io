@@ -119,11 +119,14 @@ main {
     justify-self: center;
     border-style: solid;
     border-width: 0.15rem;
-    transform: translate(0, -7  %);
+    transform: translate(0, -7%);
 }
 
 .itemDescription {
     display: flex;
+    align-items: center;
+    overflow-y: auto;
+    text-overflow: ellipsis;
     justify-self: center;
     width: 80%;
     height: 100%;
@@ -132,8 +135,6 @@ main {
     border-style: solid;
     border-width: 0.15rem;
     grid-row: 2 / 6;
-    grid-column: 1 / -1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: clamp(0.5rem, 1rem);
+    grid-column: 1 / -1;    
+
 }
