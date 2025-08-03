@@ -34,6 +34,8 @@ main {
     top: 0;   
 }
 
+
+
 .playerButton {
     flex: 1;
     margin: 0.1rem;
@@ -45,12 +47,25 @@ main {
     height: 8vh;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     bottom: 0;
     background-color: grey;
 }
 
 .footer > * {
     margin: 0.1rem;
+}
+
+.settingsIcon {
+    height: 75%;
+    aspect-ratio: 1/1;
+    margin-right: 2%;
+}
+
+#loginButton {
+    margin-left: 2%;
+    height: 75%;
+    width: 40%;
 }
 
 .itemCard {
