@@ -122,31 +122,19 @@ main {
 
 .itemDescription {
     display: flex;
-    align-items: center;
+    align-items: start;
+    justify-content: center;
     overflow-y: auto;
     text-overflow: ellipsis;
     justify-self: center;
     width: 80%;
     height: 100%;
-    padding: 2%;
+    padding: 3%;
     transform: translate(0, 10%);
     border-style: solid;
     border-width: 0.15rem;
     grid-row: 2 / 7;
     grid-column: 1 / -1;    
-
 }
 
-.descriptionScrollWrapper {
-    position: relative;
-    height: 6em;                  /* Visible height of scroll area */
-    overflow: hidden;
-    width: 80%;
-    justify-self: center;
-    grid-row: 2 / 7;
-    grid-column: 1 / -1;
-    transform: translate(0, 10%);
-    padding: 2%;
-    border: 0.15rem solid;
-    box-sizing: border-box;    
-}
+

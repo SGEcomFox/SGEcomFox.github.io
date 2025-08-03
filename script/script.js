@@ -26,16 +26,17 @@ function buildTestItems(amount) {
         });
         newItemCount.text(Math.floor(Math.random() * 99) + 1);
         newItem.append(newItemCount);
-           const scrollWrapper = $('<div>', {
-            class: 'descriptionScrollWrapper'
-        });
         const newItemDescription = $('<label>', {
             class: 'itemDescription',
             id: 'itemDescription'+i
         })
-        newItemDescription.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id neque vitae mauris venenatis finibus. Nulla ultricies dignissim iaculis. Suspendisse quis sodales justo. Vivamus metus augue, rhoncus sit amet vulputate eget, sagittis eget enim. Nulla eget bibendum risus. Etiam sit amet elit dapibus, ultricies mi at, varius mi. Maecenas feugiat purus a placerat mattis.');
-        scrollWrapper.append(newItemDescription); 
-        newItem.append(scrollWrapper);        
+        const coin = Math.random();
+        if(coin > 0.8) {
+            newItemDescription.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non porttitor nibh, non faucibus arcu. Sed nec elit quis erat pharetra consequat sit amet sit amet justo. Integer aliquet vehicula nunc, id placerat quam mollis eu. Nam sed lorem felis. Phasellus sit amet neque tempor, condimentum est eget, rhoncus metus.');
+        } else {
+            newItemDescription.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        }
+        newItem.append(newItemDescription);        
     }
 }
 
