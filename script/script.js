@@ -26,14 +26,16 @@ function buildTestItems(amount) {
         });
         newItemCount.text(Math.floor(Math.random() * 99) + 1);
         newItem.append(newItemCount);
+           const scrollWrapper = $('<div>', {
+            class: 'descriptionScrollWrapper'
+        });
         const newItemDescription = $('<label>', {
             class: 'itemDescription',
             id: 'itemDescription'+i
         })
         newItemDescription.text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus id neque vitae mauris venenatis finibus. Nulla ultricies dignissim iaculis. Suspendisse quis sodales justo. Vivamus metus augue, rhoncus sit amet vulputate eget, sagittis eget enim. Nulla eget bibendum risus. Etiam sit amet elit dapibus, ultricies mi at, varius mi. Maecenas feugiat purus a placerat mattis.');
-        newItem.append(newItemDescription);
-
-        
+        scrollWrapper.append(newItemDescription); 
+        newItem.append(scrollWrapper);        
     }
 }
 

@@ -34,8 +34,6 @@ main {
     top: 0;   
 }
 
-
-
 .playerButton {
     flex: 1;
     margin: 0.1rem;
@@ -137,4 +135,18 @@ main {
     grid-row: 2 / 7;
     grid-column: 1 / -1;    
 
+}
+
+.descriptionScrollWrapper {
+    position: relative;
+    height: 6em;                  /* Visible height of scroll area */
+    overflow: hidden;
+    width: 80%;
+    justify-self: center;
+    grid-row: 2 / 7;
+    grid-column: 1 / -1;
+    transform: translate(0, 10%);
+    padding: 2%;
+    border: 0.15rem solid;
+    box-sizing: border-box;    
 }
