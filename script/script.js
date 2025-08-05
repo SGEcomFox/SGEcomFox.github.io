@@ -33,7 +33,7 @@ function buildButtons() {
         button.on('click', () => {
             $('main').empty();
             loadItems(player.playerName);
-            createAddButton(player.playerName);
+            createAddButton(player.playerName);           
         })
         $('#navBar').append(button);    
     }
@@ -120,13 +120,21 @@ function createAddButton(name) {
         </div>`);
     $('main').append(addButtonDiv);
     $('.addIcon').on('click', () => {
-        addNewItemDialog();
+        addNewItemDialog(name);
     })    
 }
 
-function addNewItemDialog() {
-    console.log('Open Interface');
-    
+function addNewItemDialog(name) {   
+    $('#categorySelect').remove();
+    const categorySelect = $('<div class="categorySelect" id="categorySelect">');
+    $('#dialogWindow').css('display', 'block').append(categorySelect);
+    for(const category of categoryData ) {
+        const categoryIcon = $(
+            `<div class="categoryDiv">
+                <img class="categoryIcon" src="/icons/${category.symbol}" />
+            </div>`).css('background-color', category.color);
+        $('#categorySelect').append(categoryIcon);        
+    }
 }
 
 
