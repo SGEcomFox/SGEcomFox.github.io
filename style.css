@@ -13,6 +13,7 @@ body {
 
 main {
     display: grid;
+    align-content: start;
     grid-template-columns: repeat(2,1fr);
     gap: 0.5rem;
     overflow-y: auto;
@@ -20,7 +21,7 @@ main {
     height: 100%;
     padding: 0.5rem;
     box-sizing: border-box;
-    background-color: rgb(255, 255, 255);
+    background-color: #394a58;
 }
 
 .navBar {
@@ -29,14 +30,22 @@ main {
     justify-content: space-around;
     flex-direction: row;
     width: 100%;
-    height: 8vh;
+    height: 9vh;
     margin: 0; 
-    top: 0;   
+    top: 0;  
+    background-color: #1d2c38; 
 }
 
 .playerButton {
     flex: 1;
-    margin: 0.1rem;
+    height: 8vh;
+    margin: 0.2em;
+    border: none;
+    padding: 0;
+    border-radius: 10px;
+
+    color: white;
+    font-size: clamp(0.5rem, 1.5rem, 5rem);
 }
 
 .footer {
@@ -47,7 +56,7 @@ main {
     justify-content: space-between;
     align-items: center;
     bottom: 0;
-    background-color: grey;
+    background-color: #1d2c38;
 }
 
 .footer > * {
@@ -64,6 +73,8 @@ main {
     margin-left: 2%;
     height: 75%;
     width: 40%;
+    background: rgba(100, 99, 99, 0.479);
+    
 }
 
 .itemCard {
@@ -75,17 +86,17 @@ main {
     border-width: 0.15rem;
     border-color: black;
     border-radius: 10% / 6%;
-    width: auto;
-    aspect-ratio: 1/1.6;   
-    background-color: rgba(167, 5, 5, 0.747); 
+    box-shadow: 1vw 1.5vw 0.5vw 0.5vw rgba(0, 0, 0, 0.473);
+    max-width: 45vw;
+    aspect-ratio: 1/1.6;    
 }
 
 .itemIcon {
     grid-row: 1;
     grid-column: 5;
     overflow: auto;
-    width: 100%;
-    height: 100%;
+    width: 85%;
+    height: 85%;
     transform: translate(-15%, 15%);
     }
 
@@ -97,8 +108,8 @@ main {
     grid-row: 1;
     grid-column: 1;
     overflow: auto;
-    width: 100%;
-    height: 100%;
+    width: 85%;
+    height: 85%;
     border-style: solid;
     border-width: 0.15rem;
     border-radius: 360rem;
@@ -113,7 +124,7 @@ main {
     justify-content: center;
     overflow: auto;
 
-    height: 65%;
+    height: 85%;
     width: 85%;
 
     grid-row: 8;
@@ -123,7 +134,7 @@ main {
     border-style: solid;
     border-width: 0.15rem;
 
-    transform: translate(0, -7%);
+    transform: translate(0, -20%);
 
     background-image:
       linear-gradient(rgba(255, 255, 255, 0.3),   /* white 40 % opacity overlay */
@@ -134,6 +145,7 @@ main {
     background-repeat: no-repeat;
 
     color: #3b2f1c; /* ink-like text color */
+    font-size: 4vw;
     font-family: 'Georgia', serif; /* or an older-looking font */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* subtle shadow */
 }
@@ -144,10 +156,10 @@ main {
     justify-content: center;
     justify-self: center;
     width: 80%;
-    height: 95%;
+    height: 100%;
     padding: 3%;
 
-    transform: translate(0, 7%);
+    transform: translate(0, 2%);
 
     border-style: solid;
     border-width: 0.15rem;
@@ -168,7 +180,15 @@ main {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* subtle shadow */
     overflow-y: auto;
     text-overflow: ellipsis;
+    font-size: 4vw;
     
+}
+
+.addIcon {
+    grid-column: 2 / 5;
+    grid-row: 3 / 6;
+    width: 100%;
+    transform: translate(0, 17%);   
 }
 
 

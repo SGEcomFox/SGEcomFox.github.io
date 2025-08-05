@@ -31,7 +31,9 @@ function buildButtons() {
         });
         button.css('background-color', player.color);
         button.on('click', () => {
-            loadItems(player.playerName)
+            $('main').empty();
+            loadItems(player.playerName);
+            createAddButton(player.playerName);
         })
         $('#navBar').append(button);    
     }
@@ -48,47 +50,8 @@ function loadItems(name) {
                 <label class="itemDescription" id="itemDescription${item.id}">${item.description}</label>               
             </div>
         `).css('background-color', item.color);
-
         $('main').append(itemCard);
     }  
-}
-
-function buildTestItems() {
-    for(let i=0; i<amount; i++) {
-        const newItem = $('<div>', {
-            class: 'itemCard',
-            id: `item${i}`
-        });
-        $('main').append(newItem);
-        const newIcon = $('<img>', {
-            class: 'itemIcon',
-            src: '/icons/sword.png'
-        });
-        newItem.append(newIcon)
-        const newItemName = $('<label>', {
-            class: 'itemName',
-            id: `itemName${i}`
-        });
-        newItemName.text('testItem');
-        newItem.append(newItemName);
-        const newItemCount = $('<label>', {
-            class: 'itemCount',
-            id: `itemCount${i}`
-        });
-        newItemCount.text(x);
-        newItem.append(newItemCount);
-        const newItemDescription = $('<label>', {
-            class: 'itemDescription',
-            id: `itemDescription${i}`
-        })
-        const coin = Math.random();
-        if(coin > 0.8) {
-            newItemDescription.text(y);
-        } else {
-            newItemDescription.text(y);
-        }
-        newItem.append(newItemDescription);        
-    }
 }
 
 async function importDataBase(data) {
@@ -144,6 +107,23 @@ function createInventory() {
         };
     });  
     return inventory;       
+}
+
+function createAddButton(name) {
+    //if logged in == true {
+    const addButtonDiv = $(`
+        <div class="itemCard" id="addButton_${name}}">
+            <img class="addIcon" src="/icons/addIcon.png" />              
+        </div>`);
+    $('main').append(addButtonDiv);
+    $('.addIcon').on('click', () => {
+        addNewItemDialog();
+    })    
+}
+
+function addNewItemDialog() {
+    console.log('Open Interface');
+    
 }
 
 
