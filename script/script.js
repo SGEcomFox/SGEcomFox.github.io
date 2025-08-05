@@ -37,6 +37,9 @@ function buildButtons() {
         })
         $('#navBar').append(button);    
     }
+    $('#closeButton').click(function() {
+        $('#dialogWindow').css('display', 'none');    
+    })
 }
 
 function loadItems(name) {
