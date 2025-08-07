@@ -8,6 +8,7 @@ let playerData = [];
 let inventoryData = [];
 let categoryData = [];
 let inventory = [];
+let activePlayer;
 
 $(document).ready(function() {    
     importDataBase().then(() => {
@@ -32,18 +33,22 @@ function buildButtons() {
         button.css('background-color', player.color);
         button.on('click', () => {
             $('main').empty();
-            loadItems(player.playerName);
-            createAddButton(player.playerName);           
+            activePlayer = player.playerName;
+            loadItems(player.playerName);          
         })
         $('#navBar').append(button);    
     }
-    $('#closeButton').click(function() {
-        $('#dialogWindow').css('display', 'none');    
+    $('#closeButton').click(async function() {
+        $('#dialogWindow').css('display', 'none');
+        inventoryData = await importData( 'inventory', '*');
+        inventory = createInventory();
+        loadItems(activePlayer);    
     })
 }
 
 function loadItems(name) {
-     for (const item of inventory) {
+    $('main').empty();
+    for (const item of inventory) {
         if (item.player !== name) continue; 
         const itemCard = $(`
             <div class="itemCard" id="item${item.id}">
@@ -54,7 +59,8 @@ function loadItems(name) {
             </div>
         `).css('background-color', item.color);
         $('main').append(itemCard);
-    }  
+    } 
+    createAddButton(name);  
 }
 
 async function importDataBase(data) {
@@ -125,17 +131,87 @@ function createAddButton(name) {
 }
 
 function addNewItemDialog(name) {   
-    $('#categorySelect').remove();
     const categorySelect = $('<div class="categorySelect" id="categorySelect">');
-    $('#dialogWindow').css('display', 'block').append(categorySelect);
+    
+    $('#dialogWindow').css('display', 'block')
+    $('#dialogWindowContent').empty();
+    $('#dialogWindowContent').append(categorySelect);
     for(const category of categoryData ) {
         const categoryIcon = $(
-            `<div class="categoryDiv">
+            `<div id="categoryDiv_${category.name}" class="categoryDiv">
                 <img class="categoryIcon" src="/icons/${category.symbol}" />
             </div>`).css('background-color', category.color);
-        $('#categorySelect').append(categoryIcon);        
-    }
+        $('#categorySelect').append(categoryIcon);
+        $(`#categoryDiv_${category.name}`).on('click', () => {
+            listItems(category.name, name);
+        });        
+    }  
 }
+
+function listItems(category, player) {
+    $('#dialogWindowContent').empty();
+    for (const item of itemData) {
+        if (item.category === category) {
+            $(`<div class= "itemListing">
+                    <label class ="itemListingName" >${item.item_name}</label>
+                    <button class="itemListingAddButton" id="itemListingButton_${item.id}"> Add </button>
+                    <label class="itemListingDescription">${item.short_description}</label>
+                </div>`).appendTo('#dialogWindowContent');
+            $(`#itemListingButton_${item.id}`).on('click', () => {
+                addItem(item.id, player);                                             
+            })
+
+        }
+    }  
+}
+
+async function addItem(item_id, player) {
+    // Step 1: Check if this player already has the item
+    const { data: existing, error: fetchError } = await supabase
+        .from('inventory') // your table name
+        .select('*')
+        .eq('player', player)
+        .eq('item_id', item_id)
+        .maybeSingle();
+
+    if (fetchError) {
+        console.error('Error fetching inventory:', fetchError);
+        return;
+    }
+
+    if (existing) {
+        // Step 2: Update amount
+        const { error: updateError } = await supabase
+            .from('inventory')
+            .update({ amount: existing.amount + 1 })
+            .eq('id', existing.id);
+
+        if (updateError) {
+            console.error('Error updating inventory:', updateError);
+        } else {
+            console.log(`Increased amount for ${player}, item ${item_id}`);
+        }
+    } else {
+        // Step 3: Insert new row
+        const { error: insertError } = await supabase
+            .from('inventory')
+            .insert([
+                {
+                    item_id: item_id,
+                    player: player,
+                    amount: 1
+                }
+            ]);
+
+        if (insertError) {
+            console.error('Error inserting inventory:', insertError);
+        } else {
+            console.log(`Added new item ${item_id} for ${player}`);
+        }
+    }
+
+}
+
 
 
 

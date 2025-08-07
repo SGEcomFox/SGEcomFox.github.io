@@ -194,7 +194,7 @@ main {
 }
 
 #dialogWindow {
-    display: block;
+    display: none;
     position: absolute;
     z-index: 100;
 
@@ -222,6 +222,16 @@ main {
     background-color: red;
 }
 
+#dialogWindowContent {
+    display: flex;
+    width: 100%;
+    height: auto;
+
+    margin: 0 auto;      /* center container */
+    margin-top: 15%;
+    margin-bottom: 1rem;
+}
+
 #categorySelect {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -229,9 +239,6 @@ main {
     column-gap: 1em;    /* adjust spacing between columns */
     width: 100%;         /* or fixed width */
     max-width: 85vw;   
-    margin: 0 auto;      /* center container */
-    margin-top: 15%;
-    margin-bottom: 1rem;
     box-sizing: border-box;
 }
 
