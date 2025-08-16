@@ -253,6 +253,13 @@ main {
     width:100%;
 }
 
+#loginWindow {
+    display: flex;
+    position: absolute;
+    align-self: center;
+    justify-self: center;
+
+}
 
 
 

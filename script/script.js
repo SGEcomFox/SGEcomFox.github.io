@@ -44,6 +44,26 @@ function buildButtons() {
         inventory = createInventory();
         loadItems(activePlayer);    
     })
+    $('#loginButton').on('click', () => {
+        const loginWindow = $(`<div id="loginWindow">
+                <input inputmode="numeric" id="loginInput">
+                <button id="loginClose">Close</button>
+                <button id="loginEnter">Enter</button>
+            </div>`);
+        $('main').append(loginWindow);
+        $('main').on('click', '#loginClose, #loginEnter', (e) => {
+            if (e.target.id === 'loginClose') {
+                $('#loginWindow').remove();
+            } else if (e.target.id === 'loginEnter') {
+                console.log("Enter");
+                
+                
+                const value = $('#loginInput').val();
+                console.log(typeof(value));
+                tryLogin(value);
+            }
+        });
+    });
 }
 
 function loadItems(name) {
@@ -210,6 +230,21 @@ async function addItem(item_id, player) {
         }
     }
 
+}
+
+async function tryLogin(value) {
+    const { data, error } = await supabase
+        .from('loginData')
+        .select('password')
+        .single();
+
+    if (data.password == value) {
+        console.log("success");
+        
+    } else {
+        console.log("fail");
+        
+    }
 }
 
 
