@@ -12,7 +12,7 @@ let activePlayer;
 let loginState;
 
 $(document).ready(function() {
-    loginState = loadCookie("loginState");       
+    //loginState = loadCookie("loginState");       
     importDataBase().then(() => {
         inventory = createInventory();                      
         buildDom();
@@ -133,7 +133,7 @@ function createAddButton(name) {
             console.log("true");
             
         } else {
-            openLogin();       
+            openLogin("addItem", name);              
         }
         
     })    
@@ -227,7 +227,7 @@ async function addItem(item_id, player) {
 
 }
 
-async function tryLogin(value) {
+async function tryLogin(value, state, name) {   
     const { data, error } = await supabase
         .from('loginData')
         .select('password')
@@ -235,7 +235,10 @@ async function tryLogin(value) {
 
     if (data.password == value) {
         console.log("success");
-        saveCookie("loginState", "true", 8);       
+        saveCookie("loginState", "true", 8);
+        if(state === "addItem") {
+            addNewItemDialog(name);
+        }     
     } else {
         console.log("fail");
         
@@ -263,7 +266,7 @@ function loadCookie(name) {
   console.log(document.cookie);
 }
 
-function openLogin() {
+function openLogin(state, name) {
     const loginWindow = $(`<div id="loginWindow">
             <input inputmode="numeric" id="loginInput">
             <button id="loginClose">Close</button>
@@ -275,7 +278,7 @@ function openLogin() {
             $('#loginWindow').remove();
         } else if (e.target.id === 'loginEnter') {           
             const value = $('#loginInput').val();
-            tryLogin(value);
+            tryLogin(value, state, name);
             $('#loginWindow').remove();
         }
     });
