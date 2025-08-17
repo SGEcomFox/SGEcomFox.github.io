@@ -45,24 +45,7 @@ function buildButtons() {
         loadItems(activePlayer);    
     })
     $('#loginButton').on('click', () => {
-        const loginWindow = $(`<div id="loginWindow">
-                <input inputmode="numeric" id="loginInput">
-                <button id="loginClose">Close</button>
-                <button id="loginEnter">Enter</button>
-            </div>`);
-        $('main').append(loginWindow);
-        $('main').on('click', '#loginClose, #loginEnter', (e) => {
-            if (e.target.id === 'loginClose') {
-                $('#loginWindow').remove();
-            } else if (e.target.id === 'loginEnter') {
-                console.log("Enter");
-                
-                
-                const value = $('#loginInput').val();
-                console.log(typeof(value));
-                tryLogin(value);
-            }
-        });
+        openLogin();
     });
 }
 
@@ -139,14 +122,20 @@ function createInventory() {
 }
 
 function createAddButton(name) {
-    //if logged in == true {
     const addButtonDiv = $(`
         <div class="itemCard" id="addButton_${name}}">
             <img class="addIcon" src="/icons/addIcon.png" />              
         </div>`);
     $('main').append(addButtonDiv);
-    $('.addIcon').on('click', () => {
-        addNewItemDialog(name);
+    $('.addIcon').on('click', () => {   
+        if(loginState === "true") {
+            addNewItemDialog(name);
+            console.log("true");
+            
+        } else {
+            openLogin();       
+        }
+        
     })    
 }
 
@@ -178,7 +167,13 @@ function listItems(category, player) {
                     <label class="itemListingDescription">${item.short_description}</label>
                 </div>`).appendTo('#dialogWindowContent');
             $(`#itemListingButton_${item.id}`).on('click', () => {
-                addItem(item.id, player);                                             
+                if (loginState === true) {
+                    addItem(item.id, player);   
+                } else {
+                    console.log("insufficient priviliges");
+                    
+                }
+                                                          
             })
 
         }
@@ -266,6 +261,24 @@ function loadCookie(name) {
     }
   }
   console.log(document.cookie);
+}
+
+function openLogin() {
+    const loginWindow = $(`<div id="loginWindow">
+            <input inputmode="numeric" id="loginInput">
+            <button id="loginClose">Close</button>
+            <button id="loginEnter">Enter</button>
+        </div>`);
+    $('main').append(loginWindow);
+    $('main').on('click', '#loginClose, #loginEnter', (e) => {
+        if (e.target.id === 'loginClose') {
+            $('#loginWindow').remove();
+        } else if (e.target.id === 'loginEnter') {           
+            const value = $('#loginInput').val();
+            tryLogin(value);
+            $('#loginWindow').remove();
+        }
+    });
 }
 
 
