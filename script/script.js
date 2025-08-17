@@ -12,7 +12,7 @@ let activePlayer;
 let loginState;
 
 $(document).ready(function() {
-    //loginState = loadCookie("loginState");       
+    loginState = loadCookie("loginState");       
     importDataBase().then(() => {
         inventory = createInventory();                      
         buildDom();
@@ -236,6 +236,7 @@ async function tryLogin(value, state, name) {
     if (data.password == value) {
         console.log("success");
         saveCookie("loginState", "true", 8);
+        loginState = "true";
         if(state === "addItem") {
             addNewItemDialog(name);
         }     
