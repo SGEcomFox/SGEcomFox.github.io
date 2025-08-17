@@ -9,14 +9,14 @@ let inventoryData = [];
 let categoryData = [];
 let inventory = [];
 let activePlayer;
+let loginState;
 
-$(document).ready(function() {    
+$(document).ready(function() {
+    loginState = loadCookie("loginState");       
     importDataBase().then(() => {
         inventory = createInventory();                      
         buildDom();
     });
-   
-    //buildTestItems(10)
 })
 
 function buildDom(){
@@ -240,11 +240,32 @@ async function tryLogin(value) {
 
     if (data.password == value) {
         console.log("success");
-        
+        saveCookie("loginState", "true", 8);       
     } else {
         console.log("fail");
         
     }
+}
+
+function saveCookie(name, value, time) {
+    const date = new Date();
+    date.setTime(date.getTime() + (time * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = `${name}=${value}; ${expires}; path=/`;
+}
+
+function loadCookie(name) {
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
+    const prefix = name + "=";
+
+    for (let cookie of cookies) {
+    cookie = cookie.trim();
+    if (cookie.startsWith(prefix)) {
+      return cookie.substring(prefix.length);
+    }
+  }
+  console.log(document.cookie);
 }
 
 
