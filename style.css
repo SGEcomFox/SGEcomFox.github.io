@@ -75,8 +75,7 @@ main {
     margin-left: 2%;
     height: 75%;
     width: 40%;
-    background: rgba(100, 99, 99, 0.479);
-    
+    background: rgba(100, 99, 99, 0.479);    
 }
 
 .itemCard {
@@ -261,11 +260,30 @@ main {
 
 }
 
-#itemDialog {
-  position: absolute;   /* takes it out of grid sizing */
-  inset: 0;             /* shorthand for top:0; right:0; bottom:0; left:0 */
-  z-index: 10;
-  background-color: cyan;
+.itemDialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    row-gap: 1%;
+
+    position: absolute;   
+    inset: 0;             
+    z-index: 10;
+    
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.3),   
+                      rgba(255, 255, 255, 0.3)),
+      url('textures/scroll_paper.jpg');           
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.itemDialogButton {
+    min-height: 20%;
+    height: auto;
+    width: 80%;
 }
 
 

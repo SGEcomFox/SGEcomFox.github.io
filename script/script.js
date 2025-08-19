@@ -293,7 +293,6 @@ function installItemCardListeners() {
     // start a timer
     $this.data("pressTimer", setTimeout(() => {
         // show dialog after 1 second hold
-        console.log("clicked");
         openItemDialog($this);
     }, 1000)); 
     });
@@ -304,6 +303,44 @@ function installItemCardListeners() {
 }
 
 function openItemDialog(itemCard) {
-    const dialogWindow = $(`<diV id="itemDialog" class="itemCard"> </div>`);
-    itemCard.append(dialogWindow);
+    const dialogWindow = $(`<diV class="itemDialog"> </div>`);
+
+    for (const players of playerData) {
+        if(players.playerName == activePlayer) {
+            const useButton = $(`
+                <button class="itemDialogButton" id="useButton_${players.characterName}}">
+                    Benutzen          
+                </button>`);
+            useButton.on('click', () => {
+                useItem();
+            });
+            dialogWindow.append(useButton);
+        }
+    }
+    for(const players of playerData) {
+        if(players.playerName != activePlayer) {
+            const tradeButton = $(`
+                <button class="itemDialogButton" id="tradeButton_${players.characterName}}">
+                    ${players.characterName}           
+                </button>`);
+            tradeButton.on('click', () => {
+                tradeItem();  
+            });
+            dialogWindow.append(tradeButton)
+        };
+    }
+    const closeButton = $(`
+        <button class="itemDialogButton">
+            Schließen          
+        </button>`);
+    dialogWindow.append(closeButton);
+    itemCard.find('.itemDescription').append(dialogWindow);
+}
+
+function useItem() {
+
+}
+
+function tradeItem() {
+    
 }
