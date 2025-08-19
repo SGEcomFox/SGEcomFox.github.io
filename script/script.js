@@ -55,7 +55,7 @@ function loadItems(name) {
     for (const item of inventory) {
         if (item.player !== name) continue; 
         const itemCard = $(`
-            <div class="itemCard" id="item${item.id}">
+            <div class="itemCard" id="item${item.id}" data-item-id=${item.item_id}>
                 <img class="itemIcon" src="/icons/${item.symbol}" />
                 <label class="itemName" id="itemName${item.id}">${item.item_name}</label>
                 <label class="itemCount" id="itemCount${item.id}">${item.amount}</label>
@@ -312,7 +312,7 @@ function openItemDialog(itemCard) {
                     Benutzen          
                 </button>`);
             useButton.on('click', () => {
-                useItem();
+                useItem(activePlayer, itemCard.data('item-id'));
             });
             dialogWindow.append(useButton);
         }
@@ -324,7 +324,7 @@ function openItemDialog(itemCard) {
                     ${players.characterName}           
                 </button>`);
             tradeButton.on('click', () => {
-                tradeItem();  
+                tradeItem(activePlayer, players.playerName, itemCard.data('item-id'));  
             });
             dialogWindow.append(tradeButton)
         };
@@ -337,10 +337,11 @@ function openItemDialog(itemCard) {
     itemCard.find('.itemDescription').append(dialogWindow);
 }
 
-function useItem() {
-
+function useItem(player, itemId) {
+    console.log(itemId);
+    
 }
 
-function tradeItem() {
-    
+function tradeItem(from, to, itemId) {
+    console.log(from+" "+to+" "+itemId);    
 }
