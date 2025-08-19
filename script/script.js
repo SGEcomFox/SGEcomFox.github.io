@@ -300,6 +300,11 @@ function installItemCardListeners() {
     $(document).on("touchend mouseup mouseleave", ".itemCard", function () {
     clearTimeout($(this).data("pressTimer"));
     });
+
+        // prevent browser long-press menu but keep scrolling
+    $(document).on("contextmenu", ".itemCard", function (e) {
+        e.preventDefault();
+    });
 }
 
 function openItemDialog(itemCard) {
