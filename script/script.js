@@ -21,6 +21,7 @@ $(document).ready(function() {
 
 function buildDom(){
     buildButtons();
+    installItemCardListeners();
 }
 
 function buildButtons() {
@@ -285,7 +286,24 @@ function openLogin(state, name) {
     });
 }
 
+function installItemCardListeners() {
+    $(document).on("touchstart mousedown", ".itemCard", function () {
+    const $this = $(this);
 
+    // start a timer
+    $this.data("pressTimer", setTimeout(() => {
+        // show dialog after 1 second hold
+        console.log("clicked");
+        openItemDialog($this);
+    }, 1000)); 
+    });
 
+    $(document).on("touchend mouseup mouseleave", ".itemCard", function () {
+    clearTimeout($(this).data("pressTimer"));
+    });
+}
 
-
+function openItemDialog(itemCard) {
+    const dialogWindow = $(`<diV id="itemDialog" class="itemCard"> </div>`);
+    itemCard.append(dialogWindow);
+}

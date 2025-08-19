@@ -261,5 +261,12 @@ main {
 
 }
 
+#itemDialog {
+  position: absolute;   /* takes it out of grid sizing */
+  inset: 0;             /* shorthand for top:0; right:0; bottom:0; left:0 */
+  z-index: 10;
+  background-color: cyan;
+}
+
 
 
