@@ -338,6 +338,9 @@ function openItemDialog(itemCard) {
         <button class="itemDialogButton">
             Schließen          
         </button>`);
+        closeButton.on('click', () => {
+            $('.itemDialog').remove();     
+        })
     dialogWindow.append(closeButton);
     itemCard.find('.itemDescription').append(dialogWindow);
 }
