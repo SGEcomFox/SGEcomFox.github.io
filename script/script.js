@@ -168,7 +168,7 @@ function listItems(category, player) {
                     <label class="itemListingDescription">${item.short_description}</label>
                 </div>`).appendTo('#dialogWindowContent');
             $(`#itemListingButton_${item.id}`).on('click', () => {
-                if (loginState === true) {
+                if (loginState === "true") {
                     addItem(item.id, player);   
                 } else {
                     console.log("insufficient priviliges");
@@ -228,6 +228,75 @@ async function addItem(item_id, player) {
 
 }
 
+async function removeItem(player, item_id) {
+    // Step 1: Check if this player already has the item
+    const { data: existing, error: fetchError } = await supabase
+        .from('inventory')
+        .select('*')
+        .eq('player', player)
+        .eq('item_id', item_id)
+        .maybeSingle();
+
+    if (fetchError) {
+        console.error('Error fetching inventory:', fetchError);
+        return;
+    }
+
+    if (existing) {
+        if (existing.amount > 1) {
+            // Decrease the amount by 1
+            const { error: updateError } = await supabase
+                .from('inventory')
+                .update({ amount: existing.amount - 1 })
+                .eq('id', existing.id);
+            if (updateError) {
+                console.error('Error updating inventory:', updateError);
+            } else {
+                console.log(`Decreased amount for ${player}, item ${item_id}`);
+            }
+        } else {
+            // Amount is 1, so remove the row completely
+            const { error: deleteError } = await supabase
+                .from('inventory')
+                .delete()
+                .eq('id', existing.id);
+            if (deleteError) {
+                console.error('Error deleting inventory row:', deleteError);
+            } else {
+                console.log(`Deleted ${player}'s item ${item_id} from inventory`);
+            }
+        }
+    } else {
+        console.log(`Player ${player} does not have item ${item_id}`);
+    }
+}
+
+async function changeOwner(from, to, itemId) {
+    const { data: existing, error: fetchError } = await supabase
+        .from('inventory')
+        .select('*')
+        .eq('player', from)
+        .eq('item_id', itemId)
+        .maybeSingle();
+
+    if (fetchError) {
+        console.error('Error fetching inventory:', fetchError);
+        return;
+    }
+
+    if (existing) {
+        const { error: updateError } = await supabase
+            .from('inventory')
+            .update({ player: to })
+            .eq('id', existing.id);
+        if (updateError) {
+            console.error('Error updating inventory:', updateError);
+        } else {
+            console.log(`Changed Owner from ${from} to ${to}`);
+        }
+    }
+}
+
 async function tryLogin(value, state, name) {   
     const { data, error } = await supabase
         .from('loginData')
@@ -242,8 +311,7 @@ async function tryLogin(value, state, name) {
             addNewItemDialog(name);
         }     
     } else {
-        console.log("fail");
-        
+        console.log("fail");        
     }
 }
 
@@ -346,10 +414,40 @@ function openItemDialog(itemCard) {
 }
 
 function useItem(player, itemId) {
-    console.log(itemId);
     
+    const targetRow = inventory.find(
+        row => row.player === player && row.item_id === itemId
+    );
+
+    if (!targetRow) return;
+
+    //remove in dataBase
+    removeItem(player, itemId);
+
+    if (targetRow.amount > 1) {
+        targetRow.amount -= 1;
+    } else {
+        // remove by filtering instead of using index
+        inventory = inventory.filter(
+            row => !(row.player === player && row.item_id === itemId)
+        );        
+    }
 }
 
 function tradeItem(from, to, itemId) {
-    console.log(from+" "+to+" "+itemId);    
+    const targetRow = inventory.find(
+        row => row.player === to && row.item_id === itemId
+    );
+    if(!targetRow) {
+        const replaceRow = inventory.find(
+            row => row.player === from && row.item_id === itemId
+        );
+        replaceRow.player = to;
+        
+        //change in Database
+        changeOwner(from, to ,itemId);
+    } else {
+        useItem(from, itemId);
+        addItem(itemId, to);
+    }   
 }
