@@ -48,6 +48,9 @@ function buildButtons() {
     $('#loginButton').on('click', () => {
         openLogin();
     });
+    $('#characterButton').on('click', () => {
+        loadCharacters();
+    });
 }
 
 function loadItems(name) {
@@ -101,6 +104,21 @@ async function importData(table, columns) {
     } else {
         return data
     }
+}
+
+function loadCharacters() {
+    $('main').empty();
+    for (const character of playerData) { 
+        const itemCard = $(`
+            <div class="itemCard" id="character_${character.playerName}" >
+                <img class="itemIcon" src="/icons/man_black.png" />
+                <label class="itemName" >${character.characterName}</label>
+                <label class="itemCount" >${character.level}</label>
+                <img class="characterImage" src="/textures/${character.picture}">              
+            </div>
+        `).css('background-color', character.color);
+        $('main').append(itemCard);
+    }    
 }
 
 function createInventory() {
