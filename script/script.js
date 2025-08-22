@@ -39,11 +39,9 @@ function buildButtons() {
         })
         $('#navBar').append(button);    
     }
-    $('#closeButton').click(async function() {
+    $('#closeButton').click(function() {
         $('#dialogWindow').css('display', 'none');
-        inventoryData = await importData( 'inventory', '*');
-        inventory = createInventory();
-        loadItems(activePlayer);    
+        refreshLoadedItem();    
     })
     $('#loginButton').on('click', () => {
         openLogin();
@@ -53,8 +51,8 @@ function buildButtons() {
     });
 }
 
-function loadItems(name) {
-    $('main').empty();
+function loadItems(name) {  
+    $('main .itemCard').remove();
     for (const item of inventory) {
         if (item.player !== name) continue; 
         const itemCard = $(`
@@ -68,6 +66,12 @@ function loadItems(name) {
         $('main').append(itemCard);
     } 
     createAddButton(name);  
+}
+
+async function refreshLoadedItem() {
+    inventoryData = await importData( 'inventory', '*');
+    inventory = createInventory();
+    loadItems(activePlayer);   
 }
 
 async function importDataBase(data) {
@@ -187,7 +191,7 @@ function listItems(category, player) {
                 </div>`).appendTo('#dialogWindowContent');
             $(`#itemListingButton_${item.id}`).on('click', () => {
                 if (loginState === "true") {
-                    addItem(item.id, player);   
+                    addItem(item.id, player).then(refreshLoadedItem());                      
                 } else {
                     console.log("insufficient priviliges");
                     
@@ -219,11 +223,18 @@ async function addItem(item_id, player) {
             .from('inventory')
             .update({ amount: existing.amount + 1 })
             .eq('id', existing.id);
-
+        
         if (updateError) {
             console.error('Error updating inventory:', updateError);
         } else {
             console.log(`Increased amount for ${player}, item ${item_id}`);
+        }
+
+        const targetRow = inventory.find(
+            row => row.player === player && row.item_id === item_id
+        );
+        if(!targetRow) {
+            targetRow.amount += 1;
         }
     } else {
         // Step 3: Insert new row
@@ -241,9 +252,9 @@ async function addItem(item_id, player) {
             console.error('Error inserting inventory:', insertError);
         } else {
             console.log(`Added new item ${item_id} for ${player}`);
+            refreshLoadedItem();
         }
     }
-
 }
 
 async function removeItem(player, item_id) {
@@ -282,6 +293,7 @@ async function removeItem(player, item_id) {
                 console.error('Error deleting inventory row:', deleteError);
             } else {
                 console.log(`Deleted ${player}'s item ${item_id} from inventory`);
+                refreshLoadedItem();
             }
         }
     } else {
@@ -448,7 +460,8 @@ function useItem(player, itemId) {
         // remove by filtering instead of using index
         inventory = inventory.filter(
             row => !(row.player === player && row.item_id === itemId)
-        );        
+        );
+        refreshLoadedItem();        
     }
 }
 
